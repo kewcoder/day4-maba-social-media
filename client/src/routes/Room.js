@@ -43,13 +43,21 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
-    // const moderator = props.match.params.moderator;
 
     useEffect(() => {
         socketRef.current = io.connect("/");
         navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
-            socketRef.current.emit("join room", roomID);
+            let joinData = {
+                roomID: roomID,
+                moderator: socketRef.current.id,
+                speakers: {
+                    slot: '',
+                    id: socketRef.current.id
+                },
+                slot: 8
+            }
+            socketRef.current.emit("join room", joinData);
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(userID => {

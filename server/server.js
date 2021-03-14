@@ -18,7 +18,12 @@ io.on('connection', socket => {
         socket.emit("all rooms", roomData);
     })
 
-    socket.on("join room", roomID => {
+    socket.on("join room", data => {
+        const roomID = data.roomID
+        const moderator = data.moderator
+        const speakers = data.speakers
+        const slot = data.slot
+
         if (users[roomID]) {
             const length = users[roomID].length;
             users[roomID].push(socket.id);
@@ -26,21 +31,30 @@ io.on('connection', socket => {
             let objIndex = roomData.findIndex((obj => obj.roomID == roomID));
             
             roomData[objIndex].length = length
+            
+            let speakerslength = roomData[objIndex].speakers.length;
+            
+            if(speakerslength < slot){
+                
+                roomData[objIndex].speakers.push({
+                    slot: speakerslength,
+                    id: speakers.id
+                })
+            }
 
-            roomData.push({
-                roomID: roomID,
-                length: 1,
-                moderator: socket.id
-            })
 
         } else {
-            users[roomID] = [socket.id];
 
+            users[roomID] = [socket.id];
             roomData.push({
                 roomID: roomID,
                 length: 1,
-                moderator: socket.id,
-                speakers: [socket.id]
+                moderator: moderator,
+                slot: slot,
+                speakers: [{
+                    slot: 0,
+                    id: speakers.id
+                }]
             })
 
         }

@@ -6,6 +6,7 @@
   body {
     --bg: linear-gradient(292.55deg, #E5E5E5 -18.12%, rgba(79, 227, 227, 0.229167) 88.3%, rgba(35, 226, 226, 0) 119.94%, #E5E5E5 119.94%);
     --color:#0D745B;
+    --primary : #3DFFD0;
     margin: 0;
     padding: 0;
     background: var(--bg);
@@ -15,30 +16,91 @@
   
   .main{
     display: flex;
+    justify-content: center;;
     width: 100vw;
     height: 100vh;
     flex-wrap: wrap;
     padding: 10vh 10vw;
     & .left{
-        width: 40%;
+        width: 40%;;
         padding: 10px;
         & .content{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            align-content: center;
+            
             background: var(--bg);
             width: 100%;
             border-radius: 30px;
             padding:20px;
             height: 100%;
+            & h1{
+                display: flex;
+                padding: 20px;
+                margin-bottom: 10px;
+            }
+            & .item{
+                background: var(--bg);
+                color: var(--color);
+                width: 100%;
+                border-radius: 30px;
+                padding:20px;
+                text-align: center;
+                border: 0;
+                font-size: 1.5rem;
+                border: 1px solid var(--color);
+                margin-bottom: 10px;
+                cursor: pointer;
+            }
+            & .active {
+                background: var(--color);
+                color: var(--primary);
+            }
         }
     }
     & .right{
         width: 60%;
         padding: 10px;
         & .content{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            align-content: center;
             background: var(--bg);
             width: 100%;
             border-radius: 30px;
             padding:20px;
             height: 100%;
+            position: relative;
+            & .twogender{
+                display: flex;
+                text-align: center;
+            }
+            & .item{
+                background: var(--bg);
+                color: var(--color);
+                width: 100%;
+                border-radius: 30px;
+                padding:20px;
+                border: 0;
+                font-size: 1.5rem;
+                border: 1px solid var(--color);
+                margin-bottom: 10px;
+                cursor: pointer;
+                & .gender{
+                    padding: 10px;
+                    border-radius: 30px;
+                    width: 50%;
+                    border: 1px solid var(--color);
+                }
+            }
+            & .active {
+                background: var(--color);
+                color: var(--primary);
+                text-align: center;
+
+            }
 
         }
     }
@@ -47,5 +109,6 @@
         & .left, .right{
             width:100%
         }
+        padding: 2vh 2vw;
     }
   }

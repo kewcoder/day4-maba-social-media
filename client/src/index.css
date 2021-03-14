@@ -8,6 +8,7 @@
 body {
   --bg: linear-gradient(292.55deg, #E5E5E5 -18.12%, rgba(79, 227, 227, 0.229167) 88.3%, rgba(35, 226, 226, 0) 119.94%, #E5E5E5 119.94%);
   --color:#0D745B;
+  --primary: #3DFFD0;
   margin: 0;
   padding: 0;
   background: var(--bg);
@@ -19,6 +20,9 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   width: 100vw;
   height: 100vh;
   -ms-flex-wrap: wrap;
@@ -32,11 +36,48 @@ body {
 }
 
 .main .left .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
   background: var(--bg);
   width: 100%;
   border-radius: 30px;
   padding: 20px;
   height: 100%;
+}
+
+.main .left .content h1 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.main .left .content .item {
+  background: var(--bg);
+  color: var(--color);
+  width: 100%;
+  border-radius: 30px;
+  padding: 20px;
+  text-align: center;
+  border: 0;
+  font-size: 1.5rem;
+  border: 1px solid var(--color);
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.main .left .content .active {
+  background: var(--color);
+  color: var(--primary);
 }
 
 .main .right {
@@ -45,14 +86,61 @@ body {
 }
 
 .main .right .content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
   background: var(--bg);
   width: 100%;
   border-radius: 30px;
   padding: 20px;
   height: 100%;
+  position: relative;
+}
+
+.main .right .content .twogender {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: center;
+}
+
+.main .right .content .item {
+  background: var(--bg);
+  color: var(--color);
+  width: 100%;
+  border-radius: 30px;
+  padding: 20px;
+  border: 0;
+  font-size: 1.5rem;
+  border: 1px solid var(--color);
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.main .right .content .item .gender {
+  padding: 10px;
+  border-radius: 30px;
+  width: 50%;
+  border: 1px solid var(--color);
+}
+
+.main .right .content .active {
+  background: var(--color);
+  color: var(--primary);
+  text-align: center;
 }
 
 @media screen and (max-width: 800px) {
+  .main {
+    padding: 2vh 2vw;
+  }
   .main .left, .main .right {
     width: 100%;
   }
