@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+body {
+  --bg: linear-gradient(292.55deg, #E5E5E5 -18.12%, rgba(79, 227, 227, 0.229167) 88.3%, rgba(35, 226, 226, 0) 119.94%, #E5E5E5 119.94%);
+  --color:#0D745B;
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding: 10vh 10vw;
+}
+
+.main .left {
+  width: 40%;
+  padding: 10px;
+}
+
+.main .left .content {
+  background: var(--bg);
+  width: 100%;
+  border-radius: 30px;
+  padding: 20px;
+  height: 100%;
+}
+
+.main .right {
+  width: 60%;
+  padding: 10px;
+}
+
+.main .right .content {
+  background: var(--bg);
+  width: 100%;
+  border-radius: 30px;
+  padding: 20px;
+  height: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  .main .left, .main .right {
+    width: 100%;
+  }
+}
+/*# sourceMappingURL=index.css.map */
