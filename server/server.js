@@ -23,9 +23,14 @@ io.on('connection', socket => {
         const moderator = data.moderator
         const speakers = data.speakers
         const slot = data.slot
+        const name = data.name
+        const code = data.code
 
         if (users[roomID]) {
+
             const length = users[roomID].length;
+
+            
             users[roomID].push(socket.id);
 
             let objIndex = roomData.findIndex((obj => obj.roomID == roomID));
@@ -46,7 +51,10 @@ io.on('connection', socket => {
         } else {
 
             users[roomID] = [socket.id];
+
             roomData.push({
+                name: name,
+                code: code,
                 roomID: roomID,
                 length: 1,
                 moderator: moderator,
@@ -58,11 +66,14 @@ io.on('connection', socket => {
             })
 
         }
+
+
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
+        const roomData0 = roomData.filter(d => d.roomID == roomID);
 
         socket.emit("all users", usersInThisRoom);
-
+        socket.emit("room data", roomData0);
 
     });
 
@@ -75,12 +86,24 @@ io.on('connection', socket => {
     });
 
     socket.on('disconnect', () => {
+
         const roomID = socketToRoom[socket.id];
         let room = users[roomID];
         if (room) {
             room = room.filter(id => id !== socket.id);
             users[roomID] = room;
+            
+            users[roomID].map(d => {
+                // emit
+                io.to(d).emit("user leave", socket.id)
+            })
+
+
         }
+
+        socket.emit("user leave", socket.id)
+
+
     });
 
 });
