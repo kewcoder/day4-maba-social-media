@@ -1,4 +1,4 @@
-let CACHE_NAME = 'your-app-name';
+let CACHE_NAME = 'maba-sosial-media-v1';
 let urlsToCache = [
   '/'
 ];
