@@ -3,90 +3,114 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 
-const Container = styled.div`
-    width:10px;
-    height:10px;
-    background:black
-`;
+
 
 const StyledVideo = styled.video`
-    height: 0;
-    width: 0;
+        width:50px;
+        height50px;
+        background:black;
+        margin:10px
 `;
 
 const Video = (props) => {
     const ref = useRef();
 
+    // console.log(ref.current)
+
     useEffect(() => {
-        props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
+            props.peer.on("stream", stream => {
+                ref.current.srcObject = stream;
+            })
+        
+
     }, [props]);
 
-    return (
-        <div>
-            <StyledVideo playsInline autoPlay ref={ref} />
-            Hai
-        </div>
-    );
+        return (
+            <div>
+                <StyledVideo playsInline autoPlay ref={ref} />
+            </div>
+        );
 }
 
-
-// const videoConstraints = {
-//     height: window.innerHeight / 2,
-//     width: window.innerWidth / 2
-// };
-
 const Room = (props) => {
+    // const [joined, setJoined] = useState(false);
+
     const [peers, setPeers] = useState([]);
+    const [roomData, setRoomData] = useState([]);
+
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
 
-    useEffect(() => {
-        socketRef.current = io.connect("/");
-        navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
-            userVideo.current.srcObject = stream;
-            let joinData = {
-                roomID: roomID,
-                moderator: socketRef.current.id,
-                speakers: {
-                    slot: '',
-                    id: socketRef.current.id
-                },
-                slot: 8
-            }
-            socketRef.current.emit("join room", joinData);
-            socketRef.current.on("all users", users => {
-                const peers = [];
-                users.forEach(userID => {
-                    const peer = createPeer(userID, socketRef.current.id, stream);
+
+    useEffect(() => {    
+
+           const login = JSON.parse(localStorage.getItem('login'))
+        
+            socketRef.current = io.connect("/");
+
+            
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+                userVideo.current.srcObject = stream;
+                
+                let joinData = {
+                    name: 'Nama Room',
+                    code: socketRef.current.id,
+                    roomID: roomID,
+                    moderator: login,
+                    speakers: {
+                        slot: '',
+                        id: socketRef.current.id
+                    },
+                    slot: 8
+                }
+                socketRef.current.emit("join room", joinData);
+
+                socketRef.current.on("room data", data => {
+                    setRoomData(data)
+                })
+
+                socketRef.current.on("user leave", data => {
+                    console.log(data)
+                })
+
+                socketRef.current.on("all users", users => {
+                    const peers = [];
+                    users.forEach(userID => {
+                        const peer = createPeer(userID, socketRef.current.id, stream);
+                        peersRef.current.push({
+                            peerID: userID,
+                            peer,
+                        })
+                        peers.push(peer);
+                    })
+                    setPeers(peers);
+                })
+
+                socketRef.current.on("user joined", payload => {
+                    
+                    console.log(payload)
+
+                    const peer = addPeer(payload.signal, payload.callerID, stream);
                     peersRef.current.push({
-                        peerID: userID,
+                        peerID: payload.callerID,
                         peer,
                     })
-                    peers.push(peer);
-                })
-                setPeers(peers);
+
+                    setPeers(users => [...users, peer]);
+                });
+
+                socketRef.current.on("receiving returned signal", payload => {
+                    const item = peersRef.current.find(p => p.peerID === payload.id);
+                    item.peer.signal(payload.signal);
+                });
+
             })
 
-            socketRef.current.on("user joined", payload => {
-                const peer = addPeer(payload.signal, payload.callerID, stream);
-                peersRef.current.push({
-                    peerID: payload.callerID,
-                    peer,
-                })
 
-                setPeers(users => [...users, peer]);
-            });
-
-            socketRef.current.on("receiving returned signal", payload => {
-                const item = peersRef.current.find(p => p.peerID === payload.id);
-                item.peer.signal(payload.signal);
-            });
-        })
-    }, [roomID]);
+        
+    }, [roomID,props]);
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
@@ -119,14 +143,27 @@ const Room = (props) => {
     }
 
     return (
-        <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
-                return (
-                    <Video key={index} peer={peer} />
-                );
-            })}
-        </Container>
+        <div className="main">
+           <div className="left">
+                <div className="content">
+                Me: <StyledVideo muted ref={userVideo} autoPlay playsInline />
+
+                <br />
+                Other: 
+                    {peers.map((peer, index) => {
+                        return (
+                            <Video key={index} peer={peer} />
+                        );
+                    })}
+                </div>
+           </div>
+           <div className="right">
+               <div className="content">
+                    Right
+                    { JSON.stringify(roomData) }
+               </div>
+           </div>
+        </div>
     );
 };
 
