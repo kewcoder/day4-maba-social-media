@@ -76,13 +76,13 @@ const Room = (props) => {
                 socketRef.current.emit("join room", joinData);
 
                 socketRef.current.on("room data", data => {
-                    console.log(data)
+                    // console.log(data)
                     setRoomData(data.roomData[0])
                     setUsersData(data.usersData)
                 })
 
                 socketRef.current.on("user leave", data => {
-                    console.log(data+" leave")
+                    // console.log(data+" leave")
                     leaveUser.push(data)
                     setLeaveUser(leaveUser)
                 })
