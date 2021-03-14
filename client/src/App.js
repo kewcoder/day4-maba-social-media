@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/room/:roomID" component={Room} />
+        <Route path="/room/:roomID/:name/:code/:max" component={Room} />
       </Switch>
     </BrowserRouter>
   );

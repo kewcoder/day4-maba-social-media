@@ -1,6 +1,6 @@
 let CACHE_NAME = 'maba-sosial-media-v1';
 let urlsToCache = [
-  '/'
+  '/avatar'
 ];
 
 // Install a service worker

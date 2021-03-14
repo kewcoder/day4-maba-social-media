@@ -6,22 +6,18 @@ import styled from "styled-components";
 
 
 const StyledVideo = styled.video`
-        width:50px;
-        height50px;
-        background:black;
-        margin:10px
+        width:0;
+        height:0;
+        background:black
 `;
 
 const Video = (props) => {
     const ref = useRef();
 
-    // console.log(ref.current)
-
     useEffect(() => {
             props.peer.on("stream", stream => {
                 ref.current.srcObject = stream;
             })
-        
 
     }, [props]);
 
@@ -37,6 +33,8 @@ const Room = (props) => {
 
     const [peers, setPeers] = useState([]);
     const [roomData, setRoomData] = useState([]);
+    const [usersData, setUsersData] = useState([]);
+    const [leaveUser, setLeaveUser] = useState([]);
 
     const socketRef = useRef();
     const userVideo = useRef();
@@ -45,37 +43,52 @@ const Room = (props) => {
 
 
     useEffect(() => {    
+        const login = JSON.parse(localStorage.getItem('login'))
 
-           const login = JSON.parse(localStorage.getItem('login'))
+       
+        if(login === null || login === undefined){
+                props.history.push(`/`);
+        }else{
+            
+
+            const roomMax = props.match.params.max;
+            const roomName = props.match.params.name;
+            const roomCode = props.match.params.code;
+            
+
+
+         
         
             socketRef.current = io.connect("/");
 
             
-            navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+            navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
                 userVideo.current.srcObject = stream;
                 
                 let joinData = {
-                    name: 'Nama Room',
-                    code: socketRef.current.id,
+                    max: roomMax,
+                    name: roomName,
+                    code: roomCode,
                     roomID: roomID,
-                    moderator: login,
-                    speakers: {
-                        slot: '',
-                        id: socketRef.current.id
-                    },
-                    slot: 8
+                    user: {...login, id:socketRef.current.id }
                 }
+
                 socketRef.current.emit("join room", joinData);
 
                 socketRef.current.on("room data", data => {
-                    setRoomData(data)
+                    console.log(data)
+                    setRoomData(data.roomData[0])
+                    setUsersData(data.usersData)
                 })
 
                 socketRef.current.on("user leave", data => {
-                    console.log(data)
+                    console.log(data+" leave")
+                    leaveUser.push(data)
+                    setLeaveUser(leaveUser)
                 })
 
                 socketRef.current.on("all users", users => {
+                
                     const peers = [];
                     users.forEach(userID => {
                         const peer = createPeer(userID, socketRef.current.id, stream);
@@ -83,16 +96,22 @@ const Room = (props) => {
                             peerID: userID,
                             peer,
                         })
+                        
                         peers.push(peer);
+
+
                     })
+
                     setPeers(peers);
+
+
                 })
 
                 socketRef.current.on("user joined", payload => {
                     
-                    console.log(payload)
-
+            
                     const peer = addPeer(payload.signal, payload.callerID, stream);
+
                     peersRef.current.push({
                         peerID: payload.callerID,
                         peer,
@@ -110,7 +129,9 @@ const Room = (props) => {
 
 
         
-    }, [roomID,props]);
+        }
+        
+    }, [roomID,props,leaveUser]);
 
     function createPeer(userToSignal, callerID, stream) {
         const peer = new Peer({
@@ -142,25 +163,46 @@ const Room = (props) => {
         return peer;
     }
 
+    function showUsers(){
+            return usersData.map(d => {
+                return (
+                    <div className="item-user" key={d.id}>
+                        <img src={d.avatar} alt="avatar" />
+                        <span className="name"> { d.name } </span>
+                    </div>
+                )
+            })
+        
+    }
+
     return (
         <div className="main">
+
+               <StyledVideo muted ref={userVideo} autoPlay playsInline />
+                {peers.map((peer, index) => {
+                    return (
+                        <Video key={index} peer={peer} />
+                    );
+                })}
+                
+
+           
            <div className="left">
                 <div className="content">
-                Me: <StyledVideo muted ref={userVideo} autoPlay playsInline />
-
-                <br />
-                Other: 
-                    {peers.map((peer, index) => {
-                        return (
-                            <Video key={index} peer={peer} />
-                        );
-                    })}
+                {showUsers()}
                 </div>
            </div>
            <div className="right">
                <div className="content">
-                    Right
-                    { JSON.stringify(roomData) }
+                    <div className="item">
+                        Room Name :{ roomData.name }
+                    </div>
+                    <div className="item">
+                        Room Code :{ roomData.code }
+                    </div>
+                    <div className="item">
+                        Users : { roomData.length } joined
+                    </div>
                </div>
            </div>
         </div>

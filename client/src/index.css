@@ -44,13 +44,36 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  -ms-flex-line-pack: center;
-      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   background: var(--bg);
   width: 100%;
   border-radius: 30px;
   padding: 20px;
   height: 100%;
+}
+
+.main .left .content .item-user {
+  background: var(--bg);
+  color: var(--color);
+  width: 25%;
+  border-radius: 30px;
+  padding: 20px;
+  text-align: center;
+  border: 0;
+  font-size: 1.5rem;
+  border: 1px solid var(--color);
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.main .left .content .item-user img {
+  width: 50%;
+}
+
+.main .left .content .item-user .name {
+  font-size: 12px;
 }
 
 .main .left .content h1 {
@@ -122,6 +145,13 @@ body {
   border: 1px solid var(--color);
   margin-bottom: 10px;
   cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  overflow-x: scroll;
 }
 
 .main .right .content .item .gender {
@@ -131,10 +161,23 @@ body {
   border: 1px solid var(--color);
 }
 
+.main .right .content .item .img {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  margin: 0 10px;
+}
+
+.main .right .content .item .active {
+  border: 2px solid var(--color);
+}
+
 .main .right .content .active {
   background: var(--color);
   color: var(--primary);
-  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 @media screen and (max-width: 800px) {
