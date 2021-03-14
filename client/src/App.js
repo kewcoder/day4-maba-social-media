@@ -4,8 +4,6 @@ import Home from "./routes/Home";
 import Room from "./routes/Room";
 
 
-import Login from "./routes/Login";
-
 function App() {
   return (
     <BrowserRouter>

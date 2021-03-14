@@ -32,10 +32,10 @@ const Video = (props) => {
 }
 
 
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
+// const videoConstraints = {
+//     height: window.innerHeight / 2,
+//     width: window.innerWidth / 2
+// };
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
@@ -43,7 +43,7 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
-    const moderator = props.match.params.moderator;
+    // const moderator = props.match.params.moderator;
 
     useEffect(() => {
         socketRef.current = io.connect("/");

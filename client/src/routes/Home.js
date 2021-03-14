@@ -28,7 +28,7 @@ const Home = (props) => {
                   Right
                 </div>
             </div>
-            {/* <button onClick={create}>Create room</button> */}
+            <button onClick={create}>Create room</button>
         </div>
     );
 };
