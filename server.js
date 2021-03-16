@@ -132,7 +132,7 @@ io.on('connection', socket => {
         }
 
         // get All Message
-        console.log(users[roomID])
+        // console.log(users[roomID])
 
         if(users[roomID] !== undefined  && users[roomID] !== ''){
             
