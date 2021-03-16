@@ -14,9 +14,9 @@ const Home = (props) => {
         // year: '',
         gender: ''
     });
+    const [roomName, setRoomName] = useState('');
     const [rooms, setRooms] = useState([]);
     const [avatarList, setAvatarList] = useState('avatars');
-    
     const socketRef = useRef();
 
   
@@ -54,8 +54,11 @@ const Home = (props) => {
         
     }
     function create() {
-        const id = uuid();
-        props.history.push(`/room/${id}/Room Name/${socketRef.current.id}/3000`);
+        if(roomName !== ''){
+            const id = uuid();
+            props.history.push(`/room/${id}/${roomName}/${socketRef.current.id}/100`);
+
+        }
     }
 
     function joinRoom(room) {
@@ -157,17 +160,17 @@ const Home = (props) => {
                     <div className="left">
                         <div className="content">
                             <h1>Maba. </h1>
-                            <div className="item" >Kenalan Yuk !</div>
-                            <div className="item" onClick={create}>Buat Room</div>
-                            <div className="item">Unsil One Access</div>
+                            <input value={roomName} onChange={(e)=> setRoomName(e.target.value)} className="item" type="text" placeholder="Room Name" />
+                            <div className="item active" onClick={create}>Create Room</div>
+                            {/* <div className="item">Unsil One Access</div> */}
                             <div className="item" onClick={ () => setLogin({ ...login, login: false }) }>Profile</div>
-                            <div className="item">Donasi</div>
+                            <div className="item">Donate</div>
 
                         </div>
                     </div>  
                     <div className="right">
                         <div className="content">
-                            <div className="item active" >Room Recomendasi</div>
+                            <h2 style={{padding:'10px'}}>Room Recomendation : </h2>
                             {
                                 showRoom()
                             }
