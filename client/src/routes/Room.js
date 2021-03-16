@@ -329,7 +329,7 @@ const Room = (props) => {
                     <button className="item" style={{width:'100px',fontSize:'1rem',marginLeft:'auto',padding:'10px'}} onClick={leaveRoom}>Leave</button>
                 </h1>
                 <br />
-                {/* <h6 style={{width:'100%',padding:'30px'}}>Speakers :</h6> */}
+                <h6 style={{width:'100%',padding:'30px'}}>Speakers :</h6>
                 {showUsers(1)}
                 {/* <h6 style={{width:'100%',padding:'30px'}}>Listeners :</h6> */}
                 {showUsers(2)}

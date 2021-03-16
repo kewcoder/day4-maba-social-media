@@ -164,7 +164,7 @@ const Home = (props) => {
                             <div className="item active" onClick={create}>Create Room</div>
                             {/* <div className="item">Unsil One Access</div> */}
                             <div className="item" onClick={ () => setLogin({ ...login, login: false }) }>Profile</div>
-                            <div className="item">Donate</div>
+                            <a href="https://saweria.co/akew" target="_BLANK" className="item">Donate</a>
 
                         </div>
                     </div>  

@@ -1,4 +1,4 @@
-let CACHE_NAME = 'maba-sosial-media-v1';
+let CACHE_NAME = 'maba-sosial-media-v2';
 let urlsToCache = [
   '/avatar',
   '/emoji'
