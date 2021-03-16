@@ -124,7 +124,12 @@ io.on('connection', socket => {
         }
         
         // console.log(newMessage)
-        messages[roomID].push(newMessage)
+        if(messages[roomID]){
+            messages[roomID].push(newMessage)
+        }else{
+            messages[roomID] = []
+            messages[roomID].push(newMessage)
+        }
 
         // get All Message
         users[roomID].map(d => {
