@@ -132,7 +132,10 @@ io.on('connection', socket => {
         }
 
         // get All Message
-        if(users[roomID] !== null || users[roomID] !== undefined){
+        console.log(users[roomID])
+
+        if(users[roomID].length > 0 || users[roomID] !== undefined || users[roomID] !== '')){
+            
             users[roomID].map(d => {
                 // emit
                 io.to(d).emit("messages", messages[roomID]);
